@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         private Context context;
         private String urlString;
         private boolean statusABoolean = true;
+        private String truePasswordString;
 
         public MySynchronize(Context context, String urlString) {
             this.context = context;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (userString.equals(jsonObject.getString("User"))) {
                         statusABoolean = false;
-
+                        truePasswordString = jsonObject.getString("Password");
                     }   // if
 
                 } //for
@@ -90,7 +92,16 @@ public class MainActivity extends AppCompatActivity {
                     MyAlert myAlert = new MyAlert();
                     myAlert.myDialog(context, "ไม่มี User นี้",
                             "ไม่มี " + userString + " ในฐานข้อมูลของเรา");
-                }
+                } else if (passwordString.equals(truePasswordString)) {
+                    //Password True
+                    Toast.makeText(context, "Welcome User", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Password False
+                    MyAlert myAlert = new MyAlert();
+                    myAlert.myDialog(context, "Password False",
+                            "Please Try Again Password False");
+
+                }   // if
 
 
             } catch (Exception e) {
